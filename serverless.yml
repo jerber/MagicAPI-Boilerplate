@@ -95,3 +95,29 @@ custom:
   logForwarding:
     destinationARN: arn:aws:lambda:us-east-1:444719859866:function:log-forwarder-prod-forwarder
     filterPattern: "-\"[INFO]\" -\"END RequestId: \" -\"START RequestId: \"" # took out -\"REPORT RequestId: \"
+
+
+#  customDomain:
+#    domainName: jeremyberman.org
+#    basePath: ''
+#    stage: ${self:provider.stage}
+#    createRoute53Record: true
+
+
+resources:
+  Resources:
+    TasksDynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${env:TASKS_TABLE_NAME}
+        AttributeDefinitions:
+          -
+            AttributeName: task_id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: task_id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        StreamSpecification:
+          StreamViewType: NEW_IMAGE

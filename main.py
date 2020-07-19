@@ -1,7 +1,6 @@
-from magicapi import app, router, create_handler
+from magicapi import app, router, handler
 
 # add imports here
 from app import Routes
 
 app.include_router(router)
-handler = create_handler(app)
