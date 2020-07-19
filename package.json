@@ -6,6 +6,7 @@
     "serverless-log-forwarding": "^1.4.0"
   },
   "devDependencies": {
+    "serverless-domain-manager": "^4.2.0",
     "serverless-dotenv-plugin": "^2.4.2",
     "serverless-plugin-warmup": "^4.9.0",
     "serverless-python-requirements": "^5.1.0"
