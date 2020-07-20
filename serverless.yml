@@ -87,6 +87,11 @@ custom:
 #  tasksTableName: ${env:TASKS_TABLE_NAME}
   pythonRequirements:
     dockerizePip: non-linux
+    noDeploy:
+      - boto3
+      - botocore
+      - s3transfer
+      - pytest
 #  apigwBinary: # check if necessary by changing the Mangum binary response: https://mangum.io/http/
 #    types:
 #      - '*/*'
