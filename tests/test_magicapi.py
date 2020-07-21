@@ -16,6 +16,8 @@ from magicapi.app_factory import create_app
 
 app = create_app()
 
+example_prefix = "/examples"
+
 # first start the sever w ./start
 base_url = f"http://{use_host}:{port}"
 # are you using real url and real db?
@@ -33,7 +35,7 @@ def test_root():
 
 def test_test_errors():
     valid_response = {"success": False, "message": "This test worked!"}
-    response = requests.get(base_url + "/boilerplate/test_errors")
+    response = requests.get(base_url + f"{example_prefix}/test_errors")
     print(response.json())
     assert response.status_code == 452
     assert response.json() == valid_response
@@ -44,7 +46,7 @@ def test_background_tasks_via_call():
     from magicapi.Utils.random_utils import random_str
 
     code = random_str(30)
-    url = f"{base_url}/boilerplate/test_errors?{code}=yes"
+    url = f"{base_url}{example_prefix}/test_errors?{code}=yes"
     response = requests.get(url=url)
     assert response.status_code == 452
     time.sleep(5)  # give time to write to DB

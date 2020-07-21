@@ -1,10 +1,9 @@
 """There are all boilerplate examples of using routes..."""
 
-from magicapi import g
 from fastapi import APIRouter
 from magicapi.RouteClasses import MagicCallLogger
 
-boilerplate_router = APIRouter(route_class=MagicCallLogger)
+example_router = APIRouter(route_class=MagicCallLogger)
 
 """Example of background tasks."""
 import time
@@ -27,13 +26,13 @@ def sleep_for_five(secs: float, test_user: TestUser = None):
     print("ended sleep for test user", test_user)
 
 
-@boilerplate_router.post("/test_async_with_firestore")
+@example_router.post("/test_async_with_firestore")
 def test_async(*, secs: float = 5, test_user: TestUser):
     task_id = sleep_for_five(secs, test_user)
     return {"task_id": task_id}
 
 
-@boilerplate_router.post("/test_async_without_firestore")
+@example_router.post("/test_async_without_firestore")
 def test_async(*, secs: float = 5):
     task_id = sleep_for_five(secs)
     return {"task_id": task_id}
@@ -44,7 +43,7 @@ def test_async(*, secs: float = 5):
 from magicapi.Services.Doorman import CurrentUser, GET_USER
 
 
-@boilerplate_router.get("/get_current_user", response_model=CurrentUser)
+@example_router.get("/get_current_user", response_model=CurrentUser)
 def get_current_user(current_user: CurrentUser = GET_USER):
     print(current_user)
     return current_user
@@ -57,7 +56,7 @@ from fastapi.encoders import jsonable_encoder
 from typing import List
 
 
-@boilerplate_router.post("/test_dynamo")
+@example_router.post("/test_dynamo")
 def test_dynamo(tasks: List[Task]):
     start = time.time()
     with Task.get_table().batch_writer() as batch:
@@ -73,7 +72,7 @@ def test_dynamo(tasks: List[Task]):
 from app.Errors.TestError import TestError
 
 
-@boilerplate_router.get("/test_errors")
+@example_router.get("/test_errors")
 def test_errors():
     raise TestError(message="This test worked!")
 
@@ -81,13 +80,13 @@ def test_errors():
 from fastapi import File, UploadFile
 
 
-@boilerplate_router.post("/test_file")
+@example_router.post("/test_file")
 def test_file(file: bytes = File(...)):
     print(str(file)[100])
     return len(file)
 
 
-@boilerplate_router.post("/test_upload_file")
+@example_router.post("/test_upload_file")
 def test_file(file: UploadFile = File(...)):
     print("filename", file.filename)
     return "sheesh"
@@ -99,13 +98,13 @@ from magicapi.Services.Segment import analytics
 from magicapi.Services import Segment
 
 
-@boilerplate_router.post("/test_segment")
+@example_router.post("/test_segment")
 def test_segment(id: str, action, body: dict):
     Segment.track(id, action, body)
     return "done!"
 
 
-@boilerplate_router.post("/test_segment_without_background")
+@example_router.post("/test_segment_without_background")
 def test_segment(id: str, action, body: dict):
     analytics.track(id, action, body)
     return "done!"
@@ -114,7 +113,7 @@ def test_segment(id: str, action, body: dict):
 """Query Params Example"""
 
 
-@boilerplate_router.get("/query_params_test")
+@example_router.get("/query_params_test")
 def query_params(name: str):
     return f"hello {name}"
 
@@ -125,7 +124,7 @@ from magicapi.Services.Twilio import send_text
 from magicapi.FieldTypes import PhoneNumber
 
 
-@boilerplate_router.get("/send_text")
+@example_router.get("/send_text")
 def send_text_router(phone_number: PhoneNumber, body: str):
     sid = send_text(to=phone_number, body=body)
     return sid
@@ -134,7 +133,7 @@ def send_text_router(phone_number: PhoneNumber, body: str):
 from magicapi.Services.Mailgun import send_email as send_email_mailgun
 
 
-@boilerplate_router.post("/send_email")
+@example_router.post("/send_email")
 def send_email(*, subject: str = None, email_body: str, recipients: List[str]):
     # return send_email_in_background(text_body=body, recipients=recipients)
     res = send_email_mailgun(text=email_body, recipients=recipients, subject=subject)
@@ -144,7 +143,7 @@ def send_email(*, subject: str = None, email_body: str, recipients: List[str]):
 from magicapi.Services.MagicLink import send_magic_link_email
 
 
-@boilerplate_router.post("/send_magic_link")
+@example_router.post("/send_magic_link")
 def send_magic_link(email_address: str, redirect_url: str):
     res = send_magic_link_email(send_email_mailgun, email_address, redirect_url)
     return res.json()
@@ -153,7 +152,7 @@ def send_magic_link(email_address: str, redirect_url: str):
 from magicapi.Services.Segment.decorator import segment
 
 
-@boilerplate_router.get("/segment_decorator", response_model=CurrentUser)
+@example_router.get("/segment_decorator", response_model=CurrentUser)
 @segment(keywords=["current_user"])
 async def get_curr_user_w_seg(current_user: CurrentUser = GET_USER):
     return current_user
