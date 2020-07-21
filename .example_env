@@ -1,5 +1,5 @@
 # For SERVERLESS
-# REQUIRED FOR DEPLOYING
+# ** REQUIRED FOR DEPLOYING
 SERVICE=<your service>
 
 # for routing too
@@ -7,7 +7,7 @@ SERVICE=<your service>
 STAGE=DEV=
 
 # Tasks Dynamo
-# REQUIRED FOR TASKS
+# ** REQUIRED FOR TASKS
 TASKS_TABLE_NAME=
 
 # DOORMAN INFORMATION
