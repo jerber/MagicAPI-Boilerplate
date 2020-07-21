@@ -72,7 +72,7 @@ plugins:
   - serverless-dotenv-plugin
   - serverless-plugin-warmup
   - serverless-log-forwarding
-  - serverless-domain-manager
+#  - serverless-domain-manager
 
 package:
   exclude:
@@ -104,11 +104,11 @@ custom:
     filterPattern: "-\"[INFO]\" -\"END RequestId: \" -\"START RequestId: \"" # took out -\"REPORT RequestId: \"
 
 
-  customDomain:
-    domainName: jeremyberman.org
-    basePath: ''
-    stage: ${self:provider.stage}
-    createRoute53Record: true
+#  customDomain:
+#    domainName: jeremyberman.org
+#    basePath: ''
+#    stage: ${self:provider.stage}
+#    createRoute53Record: true
 
 
 #resources:
