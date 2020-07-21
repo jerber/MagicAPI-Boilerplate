@@ -1,5 +1,5 @@
 #service: firebase-lambda-test
-service: sixth-attempt
+service: ${env:SERVICE}
 
 # app and org for use with dashboard.serverless.com
 #app: firebase-lambda-test
