@@ -4,7 +4,7 @@ SERVICE=<your service>
 
 # for routing too
 # DEFAULTS TO DEV
-STAGE=DEV
+STAGE=dev
 
 # Tasks Dynamo
 # ** REQUIRED FOR TASKS

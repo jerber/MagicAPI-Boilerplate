@@ -15,6 +15,7 @@ from start import use_host, port
 from magicapi.app_factory import create_app
 
 app = create_app()
+from magicapi import g
 
 example_prefix = "/examples"
 
@@ -25,6 +26,10 @@ base_url = f"http://{use_host}:{port}"
 # RUNNING NON LOCALLY NOW... just put in the url you want to run here.... will use defualt db
 if os.getenv("aws") or False:
     real_url = f"https://jeremyberman.org/dev"
+    base_url = real_url
+
+if os.getenv('testing_url'):
+    real_url = os.getenv('testing_url')
     base_url = real_url
 
 
