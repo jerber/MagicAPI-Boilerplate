@@ -92,6 +92,7 @@ custom:
       - botocore
       - s3transfer
       - pytest
+      - typer
 #  apigwBinary: # check if necessary by changing the Mangum binary response: https://mangum.io/http/
 #    types:
 #      - '*/*'
