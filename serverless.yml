@@ -1,9 +1,8 @@
-#service: firebase-lambda-test
 service: ${env:SERVICE}
 
 # app and org for use with dashboard.serverless.com
-#app: firebase-lambda-test
-#org: jerber
+app: pull-logs
+org: jerber
 
 provider:
   name: aws
@@ -12,6 +11,9 @@ provider:
   timeout: 15
   tracing: # what does this do exactly?
     lambda: true
+#    apiGateway: true
+#  logs:
+#    restApi: true
   iamRoleStatements:
     - Effect: 'Allow'
       Action:
@@ -71,8 +73,9 @@ plugins:
   - serverless-python-requirements
   - serverless-dotenv-plugin
   - serverless-plugin-warmup
-  - serverless-log-forwarding
+#  - serverless-log-forwarding
 #  - serverless-domain-manager
+  - serverless-plugin-aws-alerts
 
 package:
   exclude:
@@ -84,6 +87,8 @@ package:
 
 
 custom:
+#  enterprise:
+#    logIngestMode: pull
 #  tasksTableName: ${env:TASKS_TABLE_NAME}
   pythonRequirements:
     dockerizePip: non-linux
@@ -97,13 +102,12 @@ custom:
 #    types:
 #      - '*/*'
   warmup:
-    concurrency: 5 # Warm up 5 concurrent instances
+    concurrency: 1 # Warm up 5 concurrent instances
     prewarm: true
 
   logForwarding:
     destinationARN: arn:aws:lambda:us-east-1:444719859866:function:log-forwarder-prod-forwarder
     filterPattern: "-\"[INFO]\" -\"END RequestId: \" -\"START RequestId: \"" # took out -\"REPORT RequestId: \"
-
 
 #  customDomain:
 #    domainName: jeremyberman.org
@@ -111,6 +115,30 @@ custom:
 #    stage: ${self:provider.stage}
 #    createRoute53Record: true
 
+  alerts:
+    stages:
+      - production
+      - dev
+    topics:
+      alarm:
+        topic: ${env:SERVICE}-${env:STAGE, 'dev'}-alerts-alarm
+        notifications:
+          - protocol: email
+            endpoint: jeremy@basement.social # Change this to your email address
+    definitions:
+      generalErrors:
+        metric: generalErrors
+        threshold: 0
+        statistic: Sum
+        period: 60
+        evaluationPeriods: 1
+        datapointsToAlarm: 1
+        comparisonOperator: GreaterThanThreshold
+        pattern: 'ERROR'
+    alarms:
+      - functionErrors
+      - functionThrottles
+      - generalErrors
 
 #resources:
 #  Resources:

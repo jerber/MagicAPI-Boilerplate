@@ -3,7 +3,8 @@
   "description": "",
   "version": "0.1.0",
   "dependencies": {
-    "serverless-log-forwarding": "^1.4.0"
+    "serverless-log-forwarding": "^1.4.0",
+    "serverless-plugin-aws-alerts": "^1.6.1"
   },
   "devDependencies": {
     "serverless-domain-manager": "^4.2.0",
