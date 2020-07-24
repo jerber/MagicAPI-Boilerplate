@@ -8,4 +8,4 @@ use_host = public_host
 
 if __name__ == "__main__":
     os.environ["LOCAL"] = "True"
-    uvicorn.run("main:app", host=use_host, port=port, reload=True, log_level="info")
+    uvicorn.run("app:app", host=use_host, port=port, reload=True, log_level="info")

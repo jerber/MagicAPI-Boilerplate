@@ -1,4 +1,3 @@
-'''
 from app.config import custom_settings
 
 from magicapi import create_app, create_handler
@@ -15,4 +14,3 @@ app.include_router(
 )
 
 handler = create_handler(app)
-'''
