@@ -1,0 +1,19 @@
+#!/bin/bash
+
+echo hi
+
+awsEndpoint=$1
+echo "$awsEndpoint"
+openapiEndpoint="$awsEndpoint"/openapi.json
+echo "$openapiEndpoint"
+
+authToken=$2
+scope=$3
+name=$4
+
+request='{"authToken": "'"$authToken"'", "openapiEndpoint": "'"$openapiEndpoint"'", "newVersion": "1.0.'"$(date +%s)"'", "scope": "'"$scope"'", "name": "'"$name"'"}'
+echo "request: $request"
+
+curl -X POST -H "Content-Type: application/json" \
+    -d "$request" \
+    https://fastapi-to-ts.herokuapp.com/update_beatgig_types
