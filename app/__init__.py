@@ -16,6 +16,7 @@ app.include_router(
     example_endpoints.boilerplate_router, prefix="/examples", tags=["examples"],
 )
 
+
 def use_route_names_as_operation_ids(app: FastAPI) -> None:
     for route in app.routes:
         if isinstance(route, APIRoute):
