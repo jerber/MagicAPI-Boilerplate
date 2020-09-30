@@ -4,10 +4,12 @@ service: ${env:SERVICE}
 app: <INSERT HERE>
 org: <INSERT HERE>
 
+# pushing from non master branch again! here in prod doe...
+
 provider:
   name: aws
   runtime: python3.8
-  stage: ${env:STAGE, 'dev'}
+  stage: ${param:STAGE, ${env:STAGE, 'dev'}}
   region: ${env:REGION, 'us-east-1'}
   timeout: 15
   apiGateway:
@@ -105,7 +107,7 @@ custom:
     commands:
       hello: echo Hello from ${self:service} service with new stack!
     hooks:
-      'deploy:finalize': bash update_types ${cf:${env:SERVICE}-${self:provider.stage}.ServiceEndpoint} ${env:TYPER_AUTH_TOKEN} ${env:TYPER_SCOPE} ${env:SERVICE}-${env:STAGE}
+      'deploy:finalize': bash update_types ${cf:${env:SERVICE}-${self:provider.stage}.ServiceEndpoint} ${env:TYPER_AUTH_TOKEN} ${env:TYPER_SCOPE} ${env:SERVICE}-${self:provider.stage}
 
 #  enterprise:
 #    logIngestMode: pull
@@ -141,7 +143,7 @@ custom:
       - dev
     topics:
       alarm:
-        topic: ${env:SERVICE}-${env:STAGE, 'dev'}-alerts-alarm
+        topic: ${env:SERVICE}-${self:provider.stage}-alerts-alarm
         notifications:
           - protocol: email
             endpoint: <INSERT EMAIL HERE> # Change this to your email address
