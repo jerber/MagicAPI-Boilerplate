@@ -105,7 +105,7 @@ custom:
     commands:
       hello: echo Hello from ${self:service} service with new stack!
     hooks:
-      'deploy:finalize': bash update_types ${cf:${env:SERVICE}-${self:provider.stage}.ServiceEndpoint} ${env:TYPER_AUTH_TOKEN} ${env:TYPER_SCOPE} ${env:TYPER_NAME}
+      'deploy:finalize': bash update_types ${cf:${env:SERVICE}-${self:provider.stage}.ServiceEndpoint} ${env:TYPER_AUTH_TOKEN} ${env:TYPER_SCOPE} ${env:SERVICE}-${env:STAGE}
 
 #  enterprise:
 #    logIngestMode: pull
