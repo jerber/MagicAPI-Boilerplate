@@ -1,14 +1,18 @@
 service: ${env:SERVICE}
 
 # app and org for use with dashboard.serverless.com
-app: seventh
-org: jerber
+app: <INSERT HERE>
+org: <INSERT HERE>
 
 provider:
   name: aws
   runtime: python3.8
   stage: ${env:STAGE, 'dev'}
+  region: ${env:REGION, 'us-east-1'}
   timeout: 15
+  apiGateway:
+    binaryMediaTypes:
+      - '*/*'
   tracing: # what does this do exactly?
     lambda: true
 #    apiGateway: true
@@ -27,6 +31,8 @@ provider:
         - dynamodb:BatchWriteItem
       Resource: "*"
   environment:
+    # SPAN
+    USE_SPAN: ${env:USE_SPAN}
     # DYNAMO
     TASKS_TABLE: ${env:TASKS_TABLE_NAME}
     # DOORMAN
@@ -55,6 +61,13 @@ provider:
     # STRIPE
     STRIPE_API_KEY: ${env:STRIPE_API_KEY}
 
+    GW_URL:
+      Fn::Join:
+        - ""
+        - - "https://"
+          - Ref: "ApiGatewayRestApi"
+          - ".execute-api.{self:provider.region}.amazonaws.com/${self:provider.stage}"
+
 functions:
   app:
     handler: app.handler
@@ -76,6 +89,7 @@ plugins:
 #  - serverless-log-forwarding
 #  - serverless-domain-manager
   - serverless-plugin-aws-alerts
+  - serverless-plugin-scripts
 
 package:
   exclude:
@@ -87,6 +101,12 @@ package:
 
 
 custom:
+  scripts:
+    commands:
+      hello: echo Hello from ${self:service} service with new stack!
+    hooks:
+      'deploy:finalize': bash update_types ${cf:${env:SERVICE}-${self:provider.stage}.ServiceEndpoint} ${env:TYPER_AUTH_TOKEN} ${env:TYPER_SCOPE} ${env:TYPER_NAME}
+
 #  enterprise:
 #    logIngestMode: pull
 #  tasksTableName: ${env:TASKS_TABLE_NAME}
@@ -124,7 +144,7 @@ custom:
         topic: ${env:SERVICE}-${env:STAGE, 'dev'}-alerts-alarm
         notifications:
           - protocol: email
-            endpoint: jeremy@basement.social # Change this to your email address
+            endpoint: <INSERT EMAIL HERE> # Change this to your email address
     definitions:
       generalErrors:
         metric: generalErrors
