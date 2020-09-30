@@ -6,6 +6,8 @@ SERVICE=<your service>
 # DEFAULTS TO DEV
 STAGE=dev
 
+USE_SPAN=true
+
 # this should be nothing unless it's the first time deploying a stack...
 #and to deploy a new stack you'd need to change this file anyway
 IS_NEW_STACK=
